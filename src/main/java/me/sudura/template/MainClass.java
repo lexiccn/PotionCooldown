@@ -1,8 +1,8 @@
 package me.sudura.template;
 
 import co.aikar.commands.PaperCommandManager;
-import me.sudura.template.commands.TemplateCommand;
-import me.sudura.template.listeners.BasicListener;
+import me.sudura.template.commands.PotionCommand;
+import me.sudura.template.listeners.PotionListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,8 +16,8 @@ public class MainClass extends JavaPlugin {
         PaperCommandManager manager = new PaperCommandManager(this);
         this.saveDefaultMessages();
         this.saveDefaultConfig();
-        manager.registerCommand(new TemplateCommand(this));
-        this.getServer().getPluginManager().registerEvents(new BasicListener(this), this);
+        manager.registerCommand(new PotionCommand(this));
+        this.getServer().getPluginManager().registerEvents(new PotionListener(this), this);
     }
 
     public FileConfiguration getMessages() {

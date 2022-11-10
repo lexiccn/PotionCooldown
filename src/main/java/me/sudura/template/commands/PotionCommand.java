@@ -3,15 +3,13 @@ package me.sudura.template.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.sudura.template.MainClass;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-@CommandAlias("template|temp")
-public class TemplateCommand extends BaseCommand {
+@CommandAlias("potion|potions|potionfix")
+public class PotionCommand extends BaseCommand {
     MainClass plugin;
 
-    public TemplateCommand(MainClass instance){
+    public PotionCommand(MainClass instance){
         plugin = instance;
     }
 

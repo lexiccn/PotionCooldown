@@ -3,4 +3,8 @@ command:
   reload: "§3Successfully reloaded §bconfig§3 and §bmessages§3!"
   unknown: "§cUnknown subcommand output."
 event:
-  error: "§cYou're running a template!"
+  blocked:
+    splash: "§cYou can't use this."
+    arrow: "§cYou can't use this."
+    beacon: "§cYou can't use this."
+    drink: "§cYou can't use this."
