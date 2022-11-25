@@ -37,7 +37,7 @@ public class PotionListener implements Listener {
     }
 
     private long getSecondsLeft(UUID uuid) {
-        return ((this.turtleCooldowns.get(uuid) / 1000L) + 10L) - (System.currentTimeMillis() / 1000L);
+        return ((this.turtleCooldowns.get(uuid) / 1000L) + 1200L) - (System.currentTimeMillis() / 1000L);
     }
 
     //Tipped Arrows
