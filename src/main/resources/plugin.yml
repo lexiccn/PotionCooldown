@@ -1,5 +1,5 @@
-name: Template
+name: PotionCooldown
 version: 1.0
 author: sudura
-main: me.sudura.template.MainClass
+main: me.sudura.potioncooldown.PotionCooldown
 api-version: 1.19

@@ -1,15 +1,15 @@
-package me.sudura.template;
+package me.sudura.potioncooldown;
 
 import co.aikar.commands.PaperCommandManager;
-import me.sudura.template.commands.PotionCommand;
-import me.sudura.template.listeners.PotionListener;
+import me.sudura.potioncooldown.commands.PotionCommand;
+import me.sudura.potioncooldown.listeners.PotionListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-public class MainClass extends JavaPlugin {
+public class PotionCooldown extends JavaPlugin {
     private File messagesFile;
     private FileConfiguration messages;
     public void onEnable() {

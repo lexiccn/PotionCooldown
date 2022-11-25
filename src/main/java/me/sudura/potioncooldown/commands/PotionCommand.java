@@ -1,33 +1,34 @@
-package me.sudura.template.commands;
+package me.sudura.potioncooldown.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import me.sudura.template.MainClass;
+import me.sudura.potioncooldown.PotionCooldown;
 import org.bukkit.command.CommandSender;
 
-@CommandAlias("potion|potions|potionfix")
+@CommandAlias("potioncooldown")
 public class PotionCommand extends BaseCommand {
-    MainClass plugin;
+    PotionCooldown plugin;
 
-    public PotionCommand(MainClass instance){
+    public PotionCommand(PotionCooldown instance){
         plugin = instance;
     }
 
     @Default
     public void onDefault(CommandSender sender) {
-        sender.sendMessage(plugin.getMessages().getString("command.default"));
+        sender.sendMessage("§cPlease specify a subcommand!");
     }
 
     @Subcommand("reload")
+    @CommandPermission("sudura.potioncooldown.reload")
     @Description("Reloads the config and messages files")
     public void onReload(CommandSender sender) {
         plugin.reloadMessages();
         plugin.reloadConfig();
-        sender.sendMessage(plugin.getMessages().getString("command.reload"));
+        sender.sendMessage("§3Reloaded the messages and config!");
     }
 
     @CatchUnknown
     public void onUnknown(CommandSender sender) {
-        sender.sendMessage(plugin.getMessages().getString("command.unknown"));
+        sender.sendMessage("§cUnknown subcommand!");
     }
 }
