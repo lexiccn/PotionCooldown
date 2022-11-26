@@ -1,9 +1,10 @@
 package me.sudura.potioncooldown.listeners;
 
 import me.sudura.potioncooldown.PotionCooldown;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -32,30 +33,32 @@ public class PotionListener implements Listener {
 
     public PotionListener(PotionCooldown instance) {
         plugin = instance;
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> this.turtleCooldowns.keySet().forEach(uuid -> {
-            Player player = Bukkit.getPlayer(uuid);
-            float progress = getSecondsLeft(uuid) / 30f;
-            if (progress == 0f) {
-                this.turtleBossbars.get(uuid);
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> this.turtleCooldowns.keySet().forEach(uuid -> {
+            BossBar bossBar = this.turtleBossbars.get(uuid);
+            long seconds = getSecondsLeft(uuid);
+            if (seconds < 1L) {
+                this.turtleCooldowns.remove(uuid);
+                bossBar.removeAll();
+                this.turtleBossbars.remove(uuid);
+                return;
             }
-            this.turtleBossbars.get(uuid).progress(progress);
+
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null && !bossBar.getPlayers().contains(player)) {
+                bossBar.addPlayer(player);
+            }
+
+            bossBar.setProgress(seconds / 1200d);
         }), 0L, 20L);
     }
 
-    private void setCooldown(Player player) {
-        BossBar bossBar = BossBar.bossBar(Component.text("Turtle Master"), 1f, BossBar.Color.PINK, BossBar.Overlay.NOTCHED_20);
-        player.showBossBar(bossBar);
-        turtleCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
-        turtleBossbars.put(player.getUniqueId(), bossBar);
+    private long getSecondsLeft(UUID uuid) {
+        return ((this.turtleCooldowns.get(uuid) / 1000L) + 1200L) - (System.currentTimeMillis() / 1000L);
     }
 
-    private long getSecondsLeft(UUID uuid) {
-        long seconds = ((this.turtleCooldowns.get(uuid) / 1000L) + 30L) - (System.currentTimeMillis() / 1000L);
-        if (seconds < 1L) {
-            this.turtleCooldowns.remove(uuid);
-            return 0L;
-        }
-        return seconds;
+    private void setCooldown(UUID uuid) {
+        this.turtleBossbars.put(uuid, Bukkit.createBossBar("Turtle Master Cooldown", BarColor.YELLOW, BarStyle.SEGMENTED_20));
+        this.turtleCooldowns.put(uuid, System.currentTimeMillis());
     }
 
     //Tipped Arrows
@@ -66,7 +69,7 @@ public class PotionListener implements Listener {
             if (turtleCooldowns.containsKey(player.getUniqueId())) {
                 arrow.setBasePotionData(waterPot);
             } else {
-                setCooldown(player);
+                setCooldown(player.getUniqueId());
             }
         }
     }
@@ -81,7 +84,7 @@ public class PotionListener implements Listener {
                 if (turtleCooldowns.containsKey(player.getUniqueId())) {
                     entityIterator.remove();
                 } else {
-                    setCooldown(player);
+                    setCooldown(player.getUniqueId());
                 }
             }
         }
@@ -95,7 +98,7 @@ public class PotionListener implements Listener {
                 if (turtleCooldowns.containsKey(player.getUniqueId())) {
                     event.setIntensity(ent, 0);
                 } else {
-                    setCooldown(player);
+                    setCooldown(player.getUniqueId());
                 }
             }
         }
@@ -107,7 +110,7 @@ public class PotionListener implements Listener {
             if (turtleCooldowns.containsKey(event.getPlayer().getUniqueId())) {
                 event.setCancelled(true);
             } else {
-                setCooldown(event.getPlayer());
+                setCooldown(event.getPlayer().getUniqueId());
             }
         }
     }
